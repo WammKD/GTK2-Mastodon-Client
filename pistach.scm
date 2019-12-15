@@ -13,6 +13,7 @@
 (define         localFeed (gtk-scrolled-window-new))
 (define     federatedFeed (gtk-scrolled-window-new))
 (define timelines         (gtk-notebook-new))
+(define tootBoxFrame      (gtk-scrolled-window-new))
 (define tootBox           (gtk-text-view-new-with-buffer))
 
 
@@ -45,6 +46,12 @@
 (append-page timelines notificationsFeed (gtk-label-new "Notifications"))
 (append-page timelines         localFeed (gtk-label-new "Local"))
 (append-page timelines     federatedFeed (gtk-label-new "Federated"))
+
+
+(add tootBoxFrame tootBox)
+(set-policy      tootBoxFrame (make <gtk-policy-type> #:value 'automatic)
+                              (make <gtk-policy-type> #:value 'automatic))
+(set-shadow-type tootBoxFrame (make <gtk-shadow-type> #:value 'etched-in))
 
 
 (add1 hPaned directMessages)
