@@ -8,6 +8,7 @@
 (define window            (gtk-window-new 'toplevel))
 (define hPaned            (gtk-hpaned-new))
 (define directMessages    (gtk-tree-view-new))
+(define vPaned            (gtk-vpaned-new))
 (define          homeFeed (gtk-scrolled-window-new))
 (define notificationsFeed (gtk-scrolled-window-new))
 (define         localFeed (gtk-scrolled-window-new))
@@ -54,8 +55,13 @@
 (set-shadow-type tootBoxFrame (make <gtk-shadow-type> #:value 'etched-in))
 
 
+(pack1 vPaned timelines    #t #t)
+(pack2 vPaned tootBoxFrame #f #t)
+
+
 (add1 hPaned directMessages)
-(add2 hPaned timelines)
+(add2 hPaned vPaned)
+
 
 (add window hPaned)
 
