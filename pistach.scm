@@ -13,6 +13,7 @@
 (define         localFeed (gtk-scrolled-window-new))
 (define     federatedFeed (gtk-scrolled-window-new))
 (define timelines         (gtk-notebook-new))
+(define tootBox           (gtk-text-view-new-with-buffer))
 
 
 
