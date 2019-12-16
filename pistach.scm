@@ -14,6 +14,7 @@
 (define         localFeed (gtk-scrolled-window-new))
 (define     federatedFeed (gtk-scrolled-window-new))
 (define timelines         (gtk-notebook-new))
+(define vBox              (gtk-vbox-new #f 0))
 (define tootBoxFrame      (gtk-scrolled-window-new))
 (define tootBox           (gtk-text-view-new-with-buffer))
 (define tootActionsHbox   (gtk-hbox-new #f 0))
@@ -70,6 +71,10 @@
 
 (pack-start tootActionsHbox attachmentButton #f #f  0)
 (pack-start tootActionsHbox align            #t #t 15)
+
+
+(pack-start vBox tootBoxFrame    #t #t 0)
+(pack-start vBox tootActionsHbox #f #f 3)
 
 
 
