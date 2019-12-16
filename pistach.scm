@@ -28,6 +28,7 @@
 (let ([renderer (gtk-cell-renderer-text-new)]
       [column   (gtk-tree-view-column-new)])
   (set-title     column "Direct Messages")
+  (set-alignment column 0.5)
   (pack-start    column renderer #f)
   (add-attribute column renderer "text" 0)
 
