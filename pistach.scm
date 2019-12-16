@@ -17,6 +17,8 @@
 (define tootBoxFrame      (gtk-scrolled-window-new))
 (define tootBox           (gtk-text-view-new-with-buffer))
 (define attachmentButton  (gtk-button-new-with-label "Attach File"))
+(define align             (gtk-alignment-new 1 0 0 1))
+(define tootCharCount     (gtk-label-new "0"))
 
 
 
@@ -62,6 +64,8 @@
 (set-image attachmentButton (gtk-image-new-from-stock
                               (gtk-stock-id 'add)
                               (make <gtk-icon-size> #:value 'button)))
+
+(add align tootCharCount)
 
 
 
