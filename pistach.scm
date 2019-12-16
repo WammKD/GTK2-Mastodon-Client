@@ -21,6 +21,7 @@
 (define attachmentButton  (gtk-button-new-with-label "Attach File"))
 (define align             (gtk-alignment-new 1 0 0 1))
 (define tootCharCount     (gtk-label-new "0"))
+(define placeholder       (gtk-label-new "Placeholder"))
 
 
 
