@@ -16,6 +16,7 @@
 (define timelines         (gtk-notebook-new))
 (define tootBoxFrame      (gtk-scrolled-window-new))
 (define tootBox           (gtk-text-view-new-with-buffer))
+(define attachmentButton  (gtk-button-new-with-label "Attach File"))
 
 
 
@@ -58,6 +59,10 @@
 
 (pack1 vPaned timelines    #t #t)
 (pack2 vPaned tootBoxFrame #f #t)
+(set-image attachmentButton (gtk-image-new-from-stock
+                              (gtk-stock-id 'add)
+                              (make <gtk-icon-size> #:value 'button)))
+
 
 
 (add1 hPaned directMessages)
