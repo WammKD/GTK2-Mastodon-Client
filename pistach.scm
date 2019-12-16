@@ -16,6 +16,7 @@
 (define timelines         (gtk-notebook-new))
 (define tootBoxFrame      (gtk-scrolled-window-new))
 (define tootBox           (gtk-text-view-new-with-buffer))
+(define tootActionsHbox   (gtk-hbox-new #f 0))
 (define attachmentButton  (gtk-button-new-with-label "Attach File"))
 (define align             (gtk-alignment-new 1 0 0 1))
 (define tootCharCount     (gtk-label-new "0"))
@@ -66,6 +67,10 @@
                               (make <gtk-icon-size> #:value 'button)))
 
 (add align tootCharCount)
+
+(pack-start tootActionsHbox attachmentButton #f #f  0)
+(pack-start tootActionsHbox align            #t #t 15)
+
 
 
 
