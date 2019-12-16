@@ -62,8 +62,6 @@
 (set-shadow-type tootBoxFrame (make <gtk-shadow-type> #:value 'etched-in))
 
 
-(pack1 vPaned timelines    #t #t)
-(pack2 vPaned tootBoxFrame #f #t)
 (set-image attachmentButton (gtk-image-new-from-stock
                               (gtk-stock-id 'add)
                               (make <gtk-icon-size> #:value 'button)))
@@ -76,6 +74,10 @@
 
 (pack-start vBox tootBoxFrame    #t #t 0)
 (pack-start vBox tootActionsHbox #f #f 3)
+
+
+(pack1 vPaned timelines #t #t)
+(pack2 vPaned vBox      #f #t)
 
 
 
