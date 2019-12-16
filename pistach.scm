@@ -8,6 +8,7 @@
 (define window            (gtk-window-new 'toplevel))
 (define hPaned            (gtk-hpaned-new))
 (define directMessages    (gtk-tree-view-new))
+(define timelinesInfoHbox (gtk-hbox-new #t 0))
 (define vPaned            (gtk-vpaned-new))
 (define          homeFeed (gtk-scrolled-window-new))
 (define notificationsFeed (gtk-scrolled-window-new))
@@ -80,10 +81,12 @@
 (pack2 vPaned vBox      #f #t)
 
 
+(pack-start timelinesInfoHbox vPaned      #t #t 0)
+(pack-start timelinesInfoHbox placeholder #t #t 0)
 
 
 (add1 hPaned directMessages)
-(add2 hPaned vPaned)
+(add2 hPaned timelinesInfoHbox)
 
 
 (add window hPaned)
