@@ -1,4 +1,4 @@
-(use-modules (gnome-2) (oop goops) (gnome gobject) (gnome gtk))
+(use-modules (gnome-2) (oop goops) (gnome gobject) (gnome gtk) (gnome gw pango))
 
 (define (add-to-list treeView str)
   (define model (get-model treeView))
@@ -21,7 +21,12 @@
 (define tootActionsHbox   (gtk-hbox-new #f 0))
 (define attachmentButton  (gtk-button-new-with-label "Attach File"))
 (define align             (gtk-alignment-new 1 0 0 1))
-(define tootCharCount     (gtk-label-new "0"))
+(define tootCharCount     (gtk-label-new "500"))
+(define boldItalAttrList  (let ([attrs (pango-attr-list-new)])
+                            (pango-attr-list-insert attrs (pango-attr-weight-new 'bold))
+                            (pango-attr-list-insert attrs (pango-attr-style-new  'italic))
+
+                            attrs))
 (define placeholder       (gtk-label-new "Placeholder"))
 
 
@@ -92,7 +97,17 @@
 (add window hPaned)
 
 
-(connect window 'destroy (lambda (w) (gtk-main-quit)))
+(connect (get-buffer tootBox) 'changed (lambda (b)
+                                         (let* ([chars (get-char-count b)]
+                                                [attrs (if (> chars 500)
+                                                           boldItalAttrList
+                                                         (pango-attr-list-new))])
+                                           (set-attributes tootCharCount attrs)
+
+                                           (set-markup
+                                             tootCharCount
+                                             (number->string (- 500 chars))))))
+(connect window               'destroy (lambda (w) (gtk-main-quit)))
 
 
 (show-all window)
