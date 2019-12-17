@@ -6,6 +6,11 @@
   (set-value model (gtk-list-store-append model) 0 str))
 
 (define window            (gtk-window-new 'toplevel))
+
+;; Login structure
+(define placeholder2      (gtk-label-new "Placeholder2"))
+
+;; Main structure
 (define hPaned            (gtk-hpaned-new))
 (define directMessages    (gtk-tree-view-new))
 (define timelinesInfoHbox (gtk-hbox-new #t 0))
