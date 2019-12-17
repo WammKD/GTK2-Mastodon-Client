@@ -33,7 +33,7 @@
 
 (set-title        window "Mastodon")
 (set-position     window 'center)
-;; (set-border-width window 5)
+(set-border-width window 7)
 (set-default-size window 370 270)
 
 
