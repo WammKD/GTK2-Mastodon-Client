@@ -1,4 +1,7 @@
-(use-modules (gnome-2) (oop goops) (gnome gobject) (gnome gtk) (gnome gw pango))
+(use-modules (gnome-2)             (oop  goops)
+             (gnome gobject)       (srfi srfi-26)
+             (gnome gtk)
+             (gnome gw      pango))
 
 (define (add-to-list treeView str)
   (define model (get-model treeView))
@@ -43,7 +46,11 @@
 
 
 
-(let ([FILLorSHRINK (make <gtk-attach-options> #:value '(fill shrink))])
+(let ([FILLorSHRINK (make <gtk-attach-options> #:value '(fill shrink))]
+      [attrs        (pango-attr-list-new)])
+  (pango-attr-list-insert attrs (pango-attr-weight-new 'bold))
+  (map (cut set-attributes <> attrs) (list usernameLabel instanceLabel passwordLabel))
+
   (attach loginTable usernameLabel   0 1 0 1 FILLorSHRINK FILLorSHRINK 0 0)
   (attach loginTable usernameTextbox 0 1 1 2 FILLorSHRINK FILLorSHRINK 0 0)
   (attach loginTable instanceLabel   0 1 3 4 FILLorSHRINK FILLorSHRINK 0 0)
