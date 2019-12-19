@@ -1,6 +1,6 @@
 (use-modules (gnome-2) (oop goops) (gnome gobject) (gnome gtk) (gnome gw pango))
 
-(define (add-to-list treeView str)
+(define (add-to-list treeView  str)
   (define model (get-model treeView))
 
   (set-value model (gtk-list-store-append model) 0 str))
