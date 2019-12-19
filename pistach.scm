@@ -8,7 +8,12 @@
 (define window            (gtk-window-new 'toplevel))
 
 ;; Login structure
-(define placeholder2      (gtk-label-new "Placeholder2"))
+(define loginAlign        (gtk-alignment-new 0.5 0.5 0 0))
+(define loginTable        (gtk-table-new 5 1 #t))
+(define usernameLabel     (gtk-label-new "Username"))
+(define usernameTextbox   (make <gtk-entry>))
+(define instanceLabel     (gtk-label-new "Instance Domain"))
+(define instanceTextbox   (make <gtk-entry>))
 
 ;; Main structure
 (define hPaned            (gtk-hpaned-new))
@@ -33,6 +38,17 @@
 
                             attrs))
 (define placeholder       (gtk-label-new "Placeholder"))
+
+
+
+(let ([FILLorSHRINK (make <gtk-attach-options> #:value '(fill shrink))])
+  (attach loginTable usernameLabel   0 1 0 1 FILLorSHRINK FILLorSHRINK 0 0)
+  (attach loginTable usernameTextbox 0 1 1 2 FILLorSHRINK FILLorSHRINK 0 0)
+  (attach loginTable instanceLabel   0 1 3 4 FILLorSHRINK FILLorSHRINK 0 0)
+  (attach loginTable instanceTextbox 0 1 4 5 FILLorSHRINK FILLorSHRINK 0 0))
+
+(add loginAlign loginTable)
+(add window     loginAlign)
 
 
 
@@ -97,9 +113,6 @@
 
 (add1 hPaned directMessages)
 (add2 hPaned timelinesInfoHbox)
-
-
-(add window hPaned)
 
 
 (connect (get-buffer tootBox) 'changed (lambda (b)
