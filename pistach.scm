@@ -9,11 +9,13 @@
 
 ;; Login structure
 (define loginAlign        (gtk-alignment-new 0.5 0.5 0 0))
-(define loginTable        (gtk-table-new 5 1 #t))
+(define loginTable        (gtk-table-new 8 1 #t))
 (define usernameLabel     (gtk-label-new "Username"))
 (define usernameTextbox   (make <gtk-entry>))
 (define instanceLabel     (gtk-label-new "Instance Domain"))
 (define instanceTextbox   (make <gtk-entry>))
+(define passwordLabel     (gtk-label-new "Password"))
+(define passwordTextbox   (make <gtk-entry>))
 
 ;; Main structure
 (define hPaned            (gtk-hpaned-new))
@@ -45,7 +47,9 @@
   (attach loginTable usernameLabel   0 1 0 1 FILLorSHRINK FILLorSHRINK 0 0)
   (attach loginTable usernameTextbox 0 1 1 2 FILLorSHRINK FILLorSHRINK 0 0)
   (attach loginTable instanceLabel   0 1 3 4 FILLorSHRINK FILLorSHRINK 0 0)
-  (attach loginTable instanceTextbox 0 1 4 5 FILLorSHRINK FILLorSHRINK 0 0))
+  (attach loginTable instanceTextbox 0 1 4 5 FILLorSHRINK FILLorSHRINK 0 0)
+  (attach loginTable passwordLabel   0 1 6 7 FILLorSHRINK FILLorSHRINK 0 0)
+  (attach loginTable passwordTextbox 0 1 7 8 FILLorSHRINK FILLorSHRINK 0 0))
 
 (add loginAlign loginTable)
 (add window     loginAlign)
