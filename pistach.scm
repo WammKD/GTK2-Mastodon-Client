@@ -67,8 +67,8 @@
 
 ;; Login structure
 (define loginAlign        (gtk-alignment-new 0.5 0.5 0 0))
-(define usernameLabel     (gtk-label-new "Username"))
 (define loginTable        (gtk-table-new 4 3 #t))
+(define usernameLabel     (gtk-label-new "E-mail"))
 (define usernameTextbox   (make <gtk-entry>))
 (define instanceLabel     (gtk-label-new "Instance Domain"))
 (define instanceTextbox   (make <gtk-entry>))
