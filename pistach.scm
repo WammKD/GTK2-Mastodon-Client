@@ -98,69 +98,81 @@
 
                             attrs))
 (define placeholder       (gtk-label-new "Placeholder"))
+(define (create-main app)
+  (let ([renderer (gtk-cell-renderer-text-new)]
+        [column   (gtk-tree-view-column-new)])
+    (set-title     column "Direct Messages")
+    (set-alignment column 0.5)
+    (pack-start    column renderer #f)
+    (add-attribute column renderer "text" 0)
+
+    (append-column directMessages column)
+    (set-model     directMessages (gtk-list-store-new (list <gchararray>))))
+
+
+  (map (lambda (feed)
+         (set-policy feed
+           (make <gtk-policy-type> #:value 'automatic)
+           (make <gtk-policy-type> #:value 'automatic))) (list
+                                                            homeFeed notificationsFeed
+                                                           localFeed     federatedFeed))
+
+  (set-tab-pos timelines (make <gtk-position-type> #:value 'top))
+  (append-page timelines          homeFeed (gtk-label-new "Home"))
+  (append-page timelines notificationsFeed (gtk-label-new "Notifications"))
+  (append-page timelines         localFeed (gtk-label-new "Local"))
+  (append-page timelines     federatedFeed (gtk-label-new "Federated"))
+
+
+  (add tootBoxFrame tootBox)
+  (set-policy      tootBoxFrame (make <gtk-policy-type> #:value 'automatic)
+                                (make <gtk-policy-type> #:value 'automatic))
+  (set-shadow-type tootBoxFrame (make <gtk-shadow-type> #:value 'etched-in))
+
+
+  (set-image attachmentButton (gtk-image-new-from-stock
+                                (gtk-stock-id 'add)
+                                (make <gtk-icon-size> #:value 'button)))
+
+  (add align tootCharCount)
+
+  (pack-start tootActionsHbox attachmentButton #f #f  0)
+  (pack-start tootActionsHbox align            #t #t 15)
+
+
+  (pack-start vBox tootBoxFrame    #t #t 0)
+  (pack-start vBox tootActionsHbox #f #f 3)
+
+
+  (pack1 vPaned timelines #t #t)
+  (pack2 vPaned vBox      #f #t)
+
+
+  (pack-start timelinesInfoHbox vPaned      #t #t 0)
+  (pack-start timelinesInfoHbox placeholder #t #t 0)
+
+
+  (add1 hPaned directMessages)
+  (add2 hPaned timelinesInfoHbox)
+
+
+  (connect (get-buffer tootBox) 'changed (lambda (b)
+                                           (let* ([chars (get-char-count b)]
+                                                  [attrs (if (> chars 500)
+                                                             boldItalAttrList
+                                                           (pango-attr-list-new))])
+                                             (set-attributes tootCharCount attrs)
+
+                                             (set-markup
+                                               tootCharCount
+                                               (number->string (- 500 chars))))))
+
+  (remove   window loginAlign)
+  (add      window hPaned)
+  (show-all window))
 
 
 
-
-
-(add loginAlign loginTable)
-(add window     loginAlign)
-
-
-
-(set-title        window "Mastodon")
-(set-position     window 'center)
-(set-border-width window 7)
-(set-default-size window 370 270)
-
-
-(let ([renderer (gtk-cell-renderer-text-new)]
-      [column   (gtk-tree-view-column-new)])
-  (set-title     column "Direct Messages")
-  (set-alignment column 0.5)
-  (pack-start    column renderer #f)
-  (add-attribute column renderer "text" 0)
-
-  (append-column directMessages column)
-  (set-model     directMessages (gtk-list-store-new (list <gchararray>))))
-
-
-(map (lambda (feed)
-       (set-policy feed
-         (make <gtk-policy-type> #:value 'automatic)
-         (make <gtk-policy-type> #:value 'automatic))) (list
-                                                          homeFeed notificationsFeed
-                                                         localFeed     federatedFeed))
-
-(set-tab-pos timelines (make <gtk-position-type> #:value 'top))
-(append-page timelines          homeFeed (gtk-label-new "Home"))
-(append-page timelines notificationsFeed (gtk-label-new "Notifications"))
-(append-page timelines         localFeed (gtk-label-new "Local"))
-(append-page timelines     federatedFeed (gtk-label-new "Federated"))
-
-
-(add tootBoxFrame tootBox)
-(set-policy      tootBoxFrame (make <gtk-policy-type> #:value 'automatic)
-                              (make <gtk-policy-type> #:value 'automatic))
-(set-shadow-type tootBoxFrame (make <gtk-shadow-type> #:value 'etched-in))
-
-
-(set-image attachmentButton (gtk-image-new-from-stock
-                              (gtk-stock-id 'add)
-                              (make <gtk-icon-size> #:value 'button)))
-
-(add align tootCharCount)
-
-(pack-start tootActionsHbox attachmentButton #f #f  0)
-(pack-start tootActionsHbox align            #t #t 15)
-
-
-(pack-start vBox tootBoxFrame    #t #t 0)
-(pack-start vBox tootActionsHbox #f #f 3)
-
-
-(pack1 vPaned timelines #t #t)
-(pack2 vPaned vBox      #f #t)
 (let ([FILLorSHRINK (make <gtk-attach-options> #:value '(fill shrink))]
       [attrs        (pango-attr-list-new)])
   (pango-attr-list-insert attrs (pango-attr-weight-new 'bold))
@@ -174,25 +186,19 @@
   (attach loginTable passwordTextbox 2 3 1 2 FILLorSHRINK FILLorSHRINK 3 0)
   (attach loginTable loginButton     1 2 3 4 FILLorSHRINK FILLorSHRINK 0 0))
 
-(pack-start timelinesInfoHbox vPaned      #t #t 0)
-(pack-start timelinesInfoHbox placeholder #t #t 0)
+(add loginAlign loginTable)
+(add window     loginAlign)
 
 
-(add1 hPaned directMessages)
-(add2 hPaned timelinesInfoHbox)
+
+(set-title        window "Mastodon")
+(set-position     window 'center)
+(set-border-width window 7)
+(set-default-size window 370 270)
 
 
-(connect (get-buffer tootBox) 'changed (lambda (b)
-                                         (let* ([chars (get-char-count b)]
-                                                [attrs (if (> chars 500)
-                                                           boldItalAttrList
-                                                         (pango-attr-list-new))])
-                                           (set-attributes tootCharCount attrs)
 
-                                           (set-markup
-                                             tootCharCount
-                                             (number->string (- 500 chars))))))
-(connect window               'destroy (lambda (w) (gtk-main-quit)))
+(connect window          'destroy  (lambda (w) (gtk-main-quit)))
 
 
 (show-all window)
