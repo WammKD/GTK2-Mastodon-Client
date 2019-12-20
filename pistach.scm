@@ -8,6 +8,16 @@
 
   (set-value model (gtk-list-store-append model) 0 str))
 
+(define HOME_DIR  (let ([user (getlogin)])
+                    (setpwent)
+
+                    (let find-home ([aUser (getpwent)])
+                      (cond
+                       [(not aUser)                                             #f]
+                       [(string=? user (passwd:name aUser))     (endpwent)
+
+                                                                (passwd:dir aUser)]
+                       [else                                (find-home (getpwent))]))))
 (define window            (gtk-window-new 'toplevel))
 
 ;; Login structure
