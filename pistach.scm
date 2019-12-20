@@ -73,7 +73,7 @@
 (define instanceLabel     (gtk-label-new "Instance Domain"))
 (define instanceTextbox   (make <gtk-entry>))
 (define passwordLabel     (gtk-label-new "Password"))
-(define passwordTextbox   (make <gtk-entry>))
+(define passwordTextbox   (make <gtk-entry> #:visibility #f))
 
 ;; Main structure
 (define hPaned            (gtk-hpaned-new))
