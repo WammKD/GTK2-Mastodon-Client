@@ -18,6 +18,51 @@
 
                                                                 (passwd:dir aUser)]
                        [else                                (find-home (getpwent))]))))
+(define APPS_FILE (string-append/shared HOME_DIR "/.config/pistach/apps"))
+(define APPS      (let ([config (string-append/shared HOME_DIR "/.config")])
+                    (if (and
+                          (file-exists? config)
+                          (eq? (stat:type (stat config)) 'directory))
+                        (let ([dir (string-append/shared config "/pistach")])
+                          (if (and
+                                (file-exists? dir)
+                                (eq? (stat:type (stat dir)) 'directory))
+                              (let ([rc (string-append/shared dir "/apps")])
+                                (if (file-exists? rc)
+                                    (fold
+                                      (lambda (elem result)
+                                        (if (string=? (car elem) "domain")
+                                            (cons (cons (cadr elem) '()) result)
+                                          (let ([last (car result)])
+                                            (cons
+                                              (cons
+                                                (car last)  ; domain
+                                                (cons
+                                                  (cons
+                                                    (string->symbol (car elem))
+                                                    (cadr elem))
+                                                  (cdr last)))
+                                              (cdr result)))))
+                                      '()
+                                      (map
+                                        (lambda (str)
+                                          (map string-trim-both (string-split str #\=)))
+                                        (filter
+                                          (lambda (str)
+                                            (> (length (string-split str #\=)) 1))
+                                          (string-split
+                                            (call-with-input-file rc get-string-all)
+                                            #\newline))))
+                                  (begin
+                                    (call-with-output-file rc (cut put-string <> ""))
+
+                                    '())))
+                            (begin
+                              (mkdir dir)
+
+                              '())))
+                      '())))
+
 (define window            (gtk-window-new 'toplevel))
 
 ;; Login structure
