@@ -171,6 +171,7 @@
   (append-page timelines     federatedFeed (gtk-label-new "Federated"))
 
 
+  (set-wrap-mode tootBox (make <gtk-wrap-mode> #:value 'word))
   (add tootBoxFrame tootBox)
   (set-policy      tootBoxFrame (make <gtk-policy-type> #:value 'automatic)
                                 (make <gtk-policy-type> #:value 'automatic))
