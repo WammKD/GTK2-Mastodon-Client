@@ -1,7 +1,8 @@
-(use-modules (gnome-2)             (oop  goops)
-             (gnome gobject)       (srfi srfi-26)
-             (gnome gtk)
-             (gnome gw      pango))
+(use-modules (elefan auth)
+             (gnome-2)              (ice-9 textual-ports)
+             (gnome gobject)        (oop   goops)
+             (gnome gtk)           ((srfi  srfi-1)        #:select (fold))
+             (gnome gw      pango)  (srfi  srfi-26))
 
 (define (add-to-list treeView str)
   (define model (get-model treeView))
