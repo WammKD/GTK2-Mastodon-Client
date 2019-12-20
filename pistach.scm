@@ -67,8 +67,8 @@
 
 ;; Login structure
 (define loginAlign        (gtk-alignment-new 0.5 0.5 0 0))
-(define loginTable        (gtk-table-new 8 1 #t))
 (define usernameLabel     (gtk-label-new "Username"))
+(define loginTable        (gtk-table-new 4 3 #t))
 (define usernameTextbox   (make <gtk-entry>))
 (define instanceLabel     (gtk-label-new "Instance Domain"))
 (define instanceTextbox   (make <gtk-entry>))
@@ -101,17 +101,7 @@
 
 
 
-(let ([FILLorSHRINK (make <gtk-attach-options> #:value '(fill shrink))]
-      [attrs        (pango-attr-list-new)])
-  (pango-attr-list-insert attrs (pango-attr-weight-new 'bold))
-  (map (cut set-attributes <> attrs) (list usernameLabel instanceLabel passwordLabel))
 
-  (attach loginTable usernameLabel   0 1 0 1 FILLorSHRINK FILLorSHRINK 0 0)
-  (attach loginTable usernameTextbox 0 1 1 2 FILLorSHRINK FILLorSHRINK 0 0)
-  (attach loginTable instanceLabel   0 1 3 4 FILLorSHRINK FILLorSHRINK 0 0)
-  (attach loginTable instanceTextbox 0 1 4 5 FILLorSHRINK FILLorSHRINK 0 0)
-  (attach loginTable passwordLabel   0 1 6 7 FILLorSHRINK FILLorSHRINK 0 0)
-  (attach loginTable passwordTextbox 0 1 7 8 FILLorSHRINK FILLorSHRINK 0 0))
 
 (add loginAlign loginTable)
 (add window     loginAlign)
@@ -171,7 +161,18 @@
 
 (pack1 vPaned timelines #t #t)
 (pack2 vPaned vBox      #f #t)
+(let ([FILLorSHRINK (make <gtk-attach-options> #:value '(fill shrink))]
+      [attrs        (pango-attr-list-new)])
+  (pango-attr-list-insert attrs (pango-attr-weight-new 'bold))
+  (map (cut set-attributes <> attrs) (list usernameLabel instanceLabel passwordLabel))
 
+  (attach loginTable usernameLabel   0 1 0 1 FILLorSHRINK FILLorSHRINK 3 0)
+  (attach loginTable usernameTextbox 0 1 1 2 FILLorSHRINK FILLorSHRINK 3 0)
+  (attach loginTable instanceLabel   1 2 0 1 FILLorSHRINK FILLorSHRINK 3 0)
+  (attach loginTable instanceTextbox 1 2 1 2 FILLorSHRINK FILLorSHRINK 3 0)
+  (attach loginTable passwordLabel   2 3 0 1 FILLorSHRINK FILLorSHRINK 3 0)
+  (attach loginTable passwordTextbox 2 3 1 2 FILLorSHRINK FILLorSHRINK 3 0)
+  (attach loginTable loginButton     1 2 3 4 FILLorSHRINK FILLorSHRINK 0 0))
 
 (pack-start timelinesInfoHbox vPaned      #t #t 0)
 (pack-start timelinesInfoHbox placeholder #t #t 0)
