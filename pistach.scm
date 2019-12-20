@@ -75,6 +75,47 @@
 (define passwordLabel     (gtk-label-new "Password"))
 (define passwordTextbox   (make <gtk-entry> #:visibility #f))
 (define loginButton       (gtk-button-new-with-label "Login"))
+(define (loginProcess widget)
+  (catch #t
+    (lambda ()
+      (let* ([domain   (get-text instanceTextbox)]
+             [ possApp    (assoc-ref APPS domain)]
+             [finalApp (if possApp
+                           (masto-app-instantiate
+                             (string-append/shared "https://" domain)
+                             #:id     (assoc-ref possApp 'id)
+                             #:secret (assoc-ref possApp 'secret)
+                             #:key    (assoc-ref possApp 'key)
+                             #:scopes '("read" "write" "follow" "push"))
+                         (let ([mApp (masto-app-instantiate
+                                       (string-append/shared "https://" domain)
+                                       #:scopes '("read" "write" "follow" "push"))])
+                           (call-with-output-file
+                               APPS_FILE
+                             (cut put-string <> (string-append/shared
+                                                  "domain="   domain
+                                                  "\nid="     (masto-app-id     mApp)
+                                                  "\nsecret=" (masto-app-secret mApp)
+                                                  "\nkey="    (masto-app-key    mApp))))
+
+                           mApp))])
+        (masto-app-set-token-via-user-cred!
+          finalApp
+          (string-downcase (get-text usernameTextbox))
+          (get-text passwordTextbox))
+
+        (create-main finalApp)))
+    (lambda _
+      (define dialog (%gtk-message-dialog-new
+                       window
+                       (make <gtk-dialog-flags> #:value 'destroy-with-parent)
+                       (make <gtk-message-type> #:value 'error)
+                       (make <gtk-buttons-type> #:value 'ok)
+                       "E-mail/Password and/or instance domain is incorrect."))
+
+      (set-title dialog "Credentials Error")
+      (run     dialog)
+      (destroy dialog))))
 
 ;; Main structure
 (define hPaned            (gtk-hpaned-new))
@@ -199,6 +240,10 @@
 
 
 
+(connect usernameTextbox 'activate loginProcess)
+(connect instanceTextbox 'activate loginProcess)
+(connect passwordTextbox 'activate loginProcess)
+(connect loginButton     'clicked  loginProcess)
 (connect window          'destroy  (lambda (w) (gtk-main-quit)))
 
 
