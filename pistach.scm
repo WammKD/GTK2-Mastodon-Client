@@ -135,6 +135,10 @@
 (define attachmentButton  (gtk-button-new-with-label "Attach File"))
 (define align             (gtk-alignment-new 1 0 0 1))
 (define tootCharCount     (gtk-label-new "500"))
+(define     boldAttrList  (let ([attrs (pango-attr-list-new)])
+                            (pango-attr-list-insert attrs (pango-attr-weight-new 'bold))
+
+                            attrs))
 (define boldItalAttrList  (let ([attrs (pango-attr-list-new)])
                             (pango-attr-list-insert attrs (pango-attr-weight-new 'bold))
                             (pango-attr-list-insert attrs (pango-attr-style-new  'italic))
@@ -216,10 +220,8 @@
 
 
 
-(let ([FILLorSHRINK (make <gtk-attach-options> #:value '(fill shrink))]
-      [attrs        (pango-attr-list-new)])
-  (pango-attr-list-insert attrs (pango-attr-weight-new 'bold))
-  (map (cut set-attributes <> attrs) (list usernameLabel instanceLabel passwordLabel))
+(let ([FILLorSHRINK (make <gtk-attach-options> #:value '(fill shrink))])
+  (map (cut set-attributes <> boldAttrList) (list usernameLabel instanceLabel passwordLabel))
 
   (attach loginTable usernameLabel   0 1 0 1 FILLorSHRINK FILLorSHRINK 3 0)
   (attach loginTable usernameTextbox 0 1 1 2 FILLorSHRINK FILLorSHRINK 3 0)
