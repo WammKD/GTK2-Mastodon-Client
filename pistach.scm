@@ -1,4 +1,4 @@
-(use-modules (elefan auth)
+(use-modules (elefan auth)          (elefan timelines)
              (gnome-2)              (ice-9 textual-ports)
              (gnome gobject)        (oop   goops)
              (gnome gtk)           ((srfi  srfi-1)        #:select (fold))
@@ -145,6 +145,26 @@
 
                             attrs))
 (define placeholder       (gtk-label-new "Placeholder"))
+
+(define (generate-status status)
+  (define account     (masto-status-account status))
+  (define  statusHbox (gtk-hbox-new #f 0))
+  (define accountImg  (gtk-label-new "IMG"))
+  (define  statusVbox (gtk-vbox-new #f 0))
+  (define  statusName (gtk-label-new (masto-account-display-name account)))
+  (define  statusText (gtk-label-new (masto-status-content       status)))
+
+  (set-attributes statusName boldAttrList)
+  (set-line-wrap  statusText #t)
+
+  (pack-start statusVbox statusName #f #f 0)
+  (pack-start statusVbox statusText #f #f 0)
+
+  (pack-start statusHbox accountImg #f #f 0)
+  (pack-start statusHbox statusVbox #t #t 0)
+
+  statusHbox)
+
 (define (create-main app)
   (let ([renderer (gtk-cell-renderer-text-new)]
         [column   (gtk-tree-view-column-new)])
@@ -214,6 +234,10 @@
                                              (set-markup
                                                tootCharCount
                                                (number->string (- 500 chars))))))
+
+
+  (add-with-viewport homeFeed (generate-status (car (masto-timelines-home app #:limit 1))))
+
 
   (remove   window loginAlign)
   (add      window hPaned)
