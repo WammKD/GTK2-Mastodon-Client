@@ -186,6 +186,12 @@
   (pack-start statusHbox accountImg #f #f 0)
   (pack-start statusHbox statusVbox #t #t 6)
 
+  (connect statusText 'size-allocate (lambda (view allocation)
+                                       (set-size-request
+                                         view
+                                         (- (vector-ref allocation 3) 10)
+                                         -1)))
+
   statusHbox)
 
 (define (create-main app)
