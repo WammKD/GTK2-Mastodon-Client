@@ -151,11 +151,23 @@
   (define  statusHbox   (gtk-hbox-new #f 0))
   (define accountImg    (gtk-label-new "IMG"))
   (define  statusVbox   (gtk-vbox-new #f 0))
+  (define  authorHbox   (gtk-hbox-new #f 0))
   (define  statusName   (gtk-label-new (masto-account-display-name account)))
+  (define    acctAlign  (gtk-alignment-new 0 0 0 1))
+  (define  statusAcct   (gtk-label-new (string-append/shared "@" (masto-account-acct
+                                                                   account))))
   (define  statusText   (gtk-text-view-new-with-buffer))
   (define  statusBuffer (get-buffer statusText))
 
   (set-attributes     statusName boldAttrList)
+  (set-ellipsize      statusName (make <pango-ellipsize-mode> #:value 'none))
+  (set-attributes     statusAcct (let ([attrs (pango-attr-list-new)])
+                                   (pango-attr-list-insert
+                                     attrs
+                                     (pango-attr-foreground-new 32767 32767 32768))
+
+                                   attrs))
+  (set-ellipsize      statusAcct (make <pango-ellipsize-mode> #:value 'end))
   (set-editable       statusText #f)
   (set-cursor-visible statusText #f)
   (set-wrap-mode      statusText (make <gtk-wrap-mode> #:value 'word))
@@ -163,11 +175,16 @@
   (let ([iter (get-iter-at-offset statusBuffer 0)])
     (insert statusBuffer iter (masto-status-content status)))
 
-  (pack-start statusVbox statusName #f #f 0)
+  (add acctAlign statusAcct)
+
+  (pack-start authorHbox statusName #f #f 0)
+  (pack-start authorHbox acctAlign  #t #t 6)
+
+  (pack-start statusVbox authorHbox #f #f 0)
   (pack-start statusVbox statusText #f #f 0)
 
   (pack-start statusHbox accountImg #f #f 0)
-  (pack-start statusHbox statusVbox #t #t 0)
+  (pack-start statusHbox statusVbox #t #t 6)
 
   statusHbox)
 
