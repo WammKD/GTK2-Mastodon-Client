@@ -179,7 +179,7 @@
 
   (map (lambda (feed)
          (set-policy feed
-           (make <gtk-policy-type> #:value 'automatic)
+           (make <gtk-policy-type> #:value 'never)
            (make <gtk-policy-type> #:value 'automatic))) (list
                                                             homeFeed notificationsFeed
                                                            localFeed     federatedFeed))
