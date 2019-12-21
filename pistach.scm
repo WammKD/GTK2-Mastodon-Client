@@ -242,7 +242,13 @@
                                                (number->string (- 500 chars))))))
 
 
-  (add-with-viewport homeFeed (generate-status (car (masto-timelines-home app #:limit 1))))
+  (let ([home       (masto-timelines-home app #:limit 2)]
+        [statusVbox                  (gtk-vbox-new #f 0)])
+    (for-each
+      (lambda (status) (pack-start statusVbox (generate-status status) #f #f 5))
+      home)
+
+    (add-with-viewport homeFeed statusVbox))
 
 
   (remove   window loginAlign)
